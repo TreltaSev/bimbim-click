@@ -1,3 +1,3 @@
-from utils.abc.handlers.file_meta import FileMeta
+from utils.abc.handlers.click import clicks
 
-__all__ = ["FileMeta"]
+__all__ = ["clicks"]

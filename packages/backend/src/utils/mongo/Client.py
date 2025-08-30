@@ -15,7 +15,7 @@ class MongoClient:
     
     console.info("Mongo Uri:", uri)
     
-    database: pymongo.database.Database = client["app"]
+    database: pymongo.database.Database = client[authdb]
     
     # Collections
     clicks: pymongo.collection.Collection = database["clicks"]
