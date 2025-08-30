@@ -6,7 +6,6 @@
     let { data }: PageProps = $props();
 
     let localClicks: number = $state(data.clicks.local);
-    let ipClicks: number = $state(data.clicks.ip);
     let totalClicks: number = $state(data.clicks.total);
 
     // Update cookies with local clicks
@@ -21,9 +20,6 @@
     function iterCounter() {
         // Update local click counter
         localClicks++;
-
-        // Add to ip clicks
-        ipClicks++;
 
         // Add to total clicks
         totalClicks++;
@@ -48,11 +44,6 @@
         <Text class="whitespace-nowrap">{localClicks}</Text>
     </Flex>
 
-    <Flex row class="p-3 rounded-xl gap-2" tertiary>
-        <Text class="whitespace-nowrap">IP Clicks:</Text>
-        <Text class="whitespace-nowrap">{ipClicks}</Text>
-    </Flex>
-    
     <Flex row class="p-3 rounded-xl gap-2" tertiary>
         <Text class="whitespace-nowrap">Total Clicks:</Text>
         <Text class="whitespace-nowrap">{totalClicks}</Text>

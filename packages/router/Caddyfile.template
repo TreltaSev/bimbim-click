@@ -1,13 +1,3 @@
-{
-	# Global options – must be the first block
-	servers {
-		trusted_proxies static private_ranges
-		trusted_proxies_strict
-		client_ip_headers Cf-Connecting-Ip X-Real-IP X-Forwarded-For
-	}
-}
-
-
 # Application
 {host} {
 
@@ -17,11 +7,11 @@
     # tls internal
 }
 
-# Application
+# Backend
 api.{host} {
 
     reverse_proxy backend:4000
 
-    # tls /certs/api.{host}.pem /certs/api.{host}-key.pem
+    # tls /certs/{host}.pem /certs/{host}-key.pem
     # tls internal
 }

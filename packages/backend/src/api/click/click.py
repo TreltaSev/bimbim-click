@@ -9,26 +9,7 @@ router = APIRouter()
 async def auth(request: Request):
     response = {
         "total": clicks.root.count
-    }
-    
-    forwarded_for = request.headers.get("x-forwarded-for-diff")
-    
-    ip = forwarded_for.split(",")[0].strip()
-    if ip.startswith("::ffff:"):
-        ip = ip.replace("::ffff:", "")
-        
-    print(ip, request.client.host)
-    
-    
-    ipCount = 0    
-    _obj = clicks.discover.get_ip(ip)
-    if _obj:
-        print("got obj", _obj)
-        ipCount = _obj.count
-        
-    
-    response["ip"] = ipCount
-    
+    }    
     return response
 
 @router.post("/click")
