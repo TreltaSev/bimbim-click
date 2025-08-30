@@ -35,4 +35,5 @@ async def auth(request: Request):
 @router.post("/click")
 async def auth(request: Request):
     host = request.client.host if request.client else None
+    print(host)
     clicks.addCount(1, host)
