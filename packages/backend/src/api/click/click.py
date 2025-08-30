@@ -11,12 +11,14 @@ async def auth(request: Request):
         "total": clicks.root.count
     }
     
-    forwarded_for = request.headers.get("x-forwarded-for")
+    forwarded_for = request.headers.get("x-forwarded-for-diff")
     print(forwarded_for)
     
     ip = forwarded_for.split(",")[0].strip()
     if ip.startswith("::ffff:"):
         ip = ip.replace("::ffff:", "")
+        
+    print(ip, request.client.host)
     
     
     ipCount = 0    

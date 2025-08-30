@@ -5,7 +5,7 @@ export const load: PageServerLoad = async ({ fetch, cookies, getClientAddress })
 
 	const response = await fetch('http://backend:4000/click', {
 		headers: {
-			'X-Forwarded-For': ip
+			'X-Forwarded-For-Diff': ip
 		}
 	});
 
