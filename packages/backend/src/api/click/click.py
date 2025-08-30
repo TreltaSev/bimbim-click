@@ -12,7 +12,6 @@ async def auth(request: Request):
     }
     
     forwarded_for = request.headers.get("x-forwarded-for-diff")
-    print(forwarded_for)
     
     ip = forwarded_for.split(",")[0].strip()
     if ip.startswith("::ffff:"):
@@ -35,5 +34,5 @@ async def auth(request: Request):
 @router.post("/click")
 async def auth(request: Request):
     host = request.client.host if request.client else None
-    print(host)
+    print(request.headers)
     clicks.addCount(1, host)
