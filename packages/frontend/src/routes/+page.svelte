@@ -17,12 +17,22 @@
 		document.cookie = `clicks=${localClicks}; expires=${expires.toUTCString()}; path=/`;
 	});
 
+	function triggerSprite(repeat: number = 1) {
+		for (let i = 0; repeat; i++) {
+			// Spawn sprite in random part of screen
+			
+			
+		}
+	}
+
 	function iterCounter() {
 		// Update local click counter
 		localClicks++;
 
 		// Add to total clicks
 		totalClicks++;
+		
+		triggerSprite()
 	}
 
 	function deiterCounter() {
@@ -32,6 +42,8 @@
 
 	function deltaCounter(amount: number) {
 		totalClicks += amount;
+
+		triggerSprite(amount)
 	}
 
 	async function postClick() {

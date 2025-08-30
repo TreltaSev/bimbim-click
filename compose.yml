@@ -21,6 +21,8 @@ services:
       - ./config.yml:/config/config.yml:ro
       - image-data:/shared/images:rw
       - backend-logs:/logs:rw
+      - meow:/meow
+      - sprites:/sprites
 
   frontend:
     # Frontend Stuff
@@ -87,3 +89,15 @@ volumes:
   mongodb_data:
     driver: local
   caddy_data:
+  meow:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./meow
+  sprites:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./sprites
