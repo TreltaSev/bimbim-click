@@ -1,5 +1,5 @@
-// Switch to the "localbulk" database
-db = db.getSiblingDB("localbulk");
+// Switch to the "bimbimclick" database
+db = db.getSiblingDB("bimbimclick");
 
 // Create a user with readWrite access to that database
 db.createUser({
@@ -8,7 +8,7 @@ db.createUser({
   roles: [
     {
       role: "readWrite",
-      db: "localbulk"
+      db: "bimbimclick"
     }
   ]
 });

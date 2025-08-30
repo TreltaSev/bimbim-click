@@ -16,11 +16,7 @@ frontend:
   API_BASE: http://backend:4000/ # Route the frontend uses for api requests in the server
 
 
-# API Credentials
-credentials:
-  username: "username"
-  password: "password"
-
 database:
   username: "mongo_user"
   password: "mongo_password"
+  auth_db: "bimbimclick"
