@@ -7,7 +7,7 @@
         header_up X-Forwarded-Proto {scheme}
     }
 
-    tls /certs/{host}.pem /certs/{host}-key.pem
+    # tls /certs/{host}.pem /certs/{host}-key.pem
     # tls internal
 }
 
@@ -20,6 +20,6 @@ api.{host} {
         header_up X-Forwarded-Proto {scheme}
     }
 
-    tls /certs/api.{host}.pem /certs/api.{host}-key.pem
+    # tls /certs/api.{host}.pem /certs/api.{host}-key.pem
     # tls internal
 }
