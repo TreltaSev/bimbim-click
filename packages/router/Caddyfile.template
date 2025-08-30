@@ -1,11 +1,17 @@
+{
+	# Global options – must be the first block
+	servers {
+		trusted_proxies static private_ranges
+		trusted_proxies_strict
+		client_ip_headers Cf-Connecting-Ip X-Real-IP X-Forwarded-For
+	}
+}
+
+
 # Application
 {host} {
 
-    reverse_proxy frontend:3000 {
-        header_up X-Real-IP {remote}
-        header_up X-Forwarded-For {remote}
-        header_up X-Forwarded-Proto {scheme}
-    }
+    reverse_proxy frontend:3000
 
     # tls /certs/{host}.pem /certs/{host}-key.pem
     # tls internal
@@ -14,11 +20,7 @@
 # Application
 api.{host} {
 
-    reverse_proxy backend:4000 {
-        header_up X-Real-IP {remote}
-        header_up X-Forwarded-For {remote}
-        header_up X-Forwarded-Proto {scheme}
-    }
+    reverse_proxy backend:4000
 
     # tls /certs/api.{host}.pem /certs/api.{host}-key.pem
     # tls internal
