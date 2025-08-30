@@ -12,3 +12,6 @@ python ./scripts/generate-caddyfile.py
 
 # Ensure the database runs seamlessly
 python ./scripts/ensure-database.py
+
+# Frontend env file generation
+python ./scripts/generate-frontend-env.py

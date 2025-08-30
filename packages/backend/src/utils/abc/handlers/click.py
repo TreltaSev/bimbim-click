@@ -22,6 +22,12 @@ class ClickMeta(WrapperModel):
         
         class Config:
             extra = "allow"
+        
+    class IpModel(BaseModel):
+        count: int = 0
+        
+        class Config:
+            extra = "allow"
             
     @property
     def root_callback(self) -> RootModel:
@@ -36,6 +42,16 @@ class ClickMeta(WrapperModel):
                 
         return self.RootModel(**response)
     
+    def get_ip(self, host: str) -> IpModel | None:
+        
+        # Return none if invalid ip
+        try:
+            ipaddress.IPv4Address(host)
+        except ipaddress.AddressValueError:
+            return None
+        
+        response = self.__collection__.find_one({"_id": host}) or {}
+        return self.IpModel(**response)
 
 class Clicks:
     
