@@ -6,6 +6,8 @@ from pathlib import Path
 
 import importlib.util
 
+import yaml
+
 
 # === Utils ===
 from utils.console import console
@@ -28,7 +30,15 @@ class App(FastAPI):
 
         super().__init__(*args, **kwargs)
         
-        self.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
+        allowed_origins = []
+        
+        yml = Yaml()
+        host = yml.populate_environment(yml.get("host"))
+        allowed_origins.append(f"https://{host}")
+        allowed_origins.append(f"https://www.{host}")
+        allowed_origins.append(f"https://api.{host}")
+        
+        self.add_middleware(CORSMiddleware, allow_origins=allowed_origins, allow_credentials=False, allow_methods=["GET", "POST"], allow_headers=["*"])
         
 
     def __try_resolve(self, name: str, package: str | None = None) -> str | None:
