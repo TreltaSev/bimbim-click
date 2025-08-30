@@ -15,8 +15,7 @@ class MongoClient:
     
     console.info("Mongo Uri:", uri)
     
-    database: pymongo.database.Database = client["localbulk"]
+    database: pymongo.database.Database = client["app"]
     
     # Collections
-    sessions: pymongo.collection.Collection = database["sessions"]
-    file_metas: pymongo.collection.Collection = database["file_metas"]
+    clicks: pymongo.collection.Collection = database["clicks"]
