@@ -6,6 +6,7 @@ from pathlib import Path
 
 import importlib.util
 
+from fastapi.routing import APIWebSocketRoute
 import yaml
 
 
@@ -89,6 +90,9 @@ class App(FastAPI):
         self.include_router(external_router)
         
         for route in external_router.routes:
+            if isinstance(route, APIWebSocketRoute):
+                console.info(f"Registered Route: [orange1]{route.path} [WS][/]")
+                continue
             console.info(f"Registered Route: [orange1]{route.path} [{', '.join(route.methods)}][/]")
 
     def register_routers(self) -> None:
