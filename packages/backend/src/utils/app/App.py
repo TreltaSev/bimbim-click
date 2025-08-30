@@ -1,5 +1,6 @@
 # === Core ===
 from fastapi import FastAPI, APIRouter
+from fastapi.middleware.cors import CORSMiddleware
 
 from pathlib import Path
 
@@ -26,6 +27,9 @@ class App(FastAPI):
         self.routers: Dict[str, Any] = {}
 
         super().__init__(*args, **kwargs)
+        
+        self.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
+        
 
     def __try_resolve(self, name: str, package: str | None = None) -> str | None:
         """
