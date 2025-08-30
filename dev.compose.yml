@@ -17,6 +17,12 @@ services:
     volumes:
       - ./packages/backend/src:/backend:ro
 
+  router:
+    volumes:
+        - ./packages/router/Caddyfile.dev:/etc/caddy/Caddyfile
+        - ./certs:/certs:ro
+        - caddy_data:/data
+
 networks:
   docker-network:
     driver: bridge

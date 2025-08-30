@@ -2,16 +2,10 @@
 {host} {
 
     reverse_proxy frontend:3000
-
-    # tls /certs/{host}.pem /certs/{host}-key.pem
-    # tls internal
 }
 
 # Backend
 api.{host} {
 
     reverse_proxy backend:4000
-
-    # tls /certs/{host}.pem /certs/{host}-key.pem
-    # tls internal
 }

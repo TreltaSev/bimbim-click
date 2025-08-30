@@ -26,7 +26,7 @@
     }
 
     async function postClick() {
-        await fetch(`https://api.${window.location.host}/click`, {method: "POST", credentials: "same-origin"})
+        await fetch(`https://api.${window.location.host}/click`, {method: "POST"})
         iterCounter();
     }
 
