@@ -4,6 +4,7 @@
 	import type { PageProps } from './$types';
 	import { onMount } from 'svelte';
 
+
 	let { data }: PageProps = $props();
 
 	let meowSprite: MeowSprite | undefined = $state(undefined);
