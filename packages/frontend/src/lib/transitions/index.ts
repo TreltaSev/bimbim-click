@@ -1,0 +1,1 @@
+export { flyfade } from './flyfade';
