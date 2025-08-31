@@ -86,7 +86,7 @@
 
 <MeowSprite bind:this={meowSprite}/>
 
-<Flex fillw row class="box-border gap-5 p-5">
+<Flex fillw row class="box-border gap-5 p-5 select-none">
 	<Spacer width />
 
 	<Flex row class="gap-2 rounded-xl p-3" tertiary>
