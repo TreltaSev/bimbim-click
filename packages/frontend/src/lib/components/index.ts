@@ -1,0 +1,1 @@
+export { default as MeowSprite } from "./meow-sprite/components/meow-sprite.svelte"

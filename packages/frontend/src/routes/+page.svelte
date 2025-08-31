@@ -1,9 +1,16 @@
 <script lang="ts">
 	import { Flex, Frame, Spacer, Text } from 'sk-clib';
+	import { MeowSprite } from "@components"
 	import type { PageProps } from './$types';
 	import { onMount } from 'svelte';
 
 	let { data }: PageProps = $props();
+
+	let meowSprite: MeowSprite | undefined = $state(undefined);
+
+	$effect(() => {
+		console.log(meowSprite.spawnSprite)
+	})
 
 	let socket: WebSocket | undefined = $state(undefined);
 
@@ -18,9 +25,9 @@
 	});
 
 	function triggerSprite(repeat: number = 1) {
-		for (let i = 0; repeat; i++) {
+		for (let i = 0; i < repeat; i++) {
 			// Spawn sprite in random part of screen
-			
+			meowSprite?.spawnSprite();
 			
 		}
 	}
@@ -74,6 +81,8 @@
 		};
 	});
 </script>
+
+<MeowSprite bind:this={meowSprite}/>
 
 <Flex fillw row class="box-border gap-5 p-5">
 	<Spacer width />
