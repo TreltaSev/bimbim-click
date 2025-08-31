@@ -17,6 +17,6 @@ export function clamp(value: number, min: number, max: number): number {
  * @param {number} max - The upper boundary of the range
  * @returns {number} A number within the specified range (min, max).
  */
-export function random(min: number, max: number): number {
+export function randomNumber(min: number, max: number): number {
 	return Math.round(Math.random() * (max - min) + min);
 }
