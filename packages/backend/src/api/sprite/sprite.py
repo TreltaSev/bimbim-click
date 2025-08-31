@@ -1,6 +1,5 @@
 # === Core ===
 import os
-import base64
 import pathlib
 from typing import Annotated
 from fastapi import APIRouter, HTTPException, Path, Response, status
