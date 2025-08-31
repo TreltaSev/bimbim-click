@@ -18,6 +18,6 @@
 	defaultSeedColor: "#f79763"
 }}/>
 
-<Flex fill col background>
+<Flex fill col background class="overflow-hidden">
 	{@render children?.()}
 </Flex>
