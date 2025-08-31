@@ -11,6 +11,7 @@
 	const sprites: Record<string, null> = $state({});
 
 	let sprites_directory: Record<string, string> = $state({});
+	let meows_directory: Record<string, string> = $state({});
 
 	$effect(() => {
 		console.log(sprites_directory)
@@ -27,6 +28,28 @@
 		});
 	}
 
+	async function cacheMeows(meow_list: string[]) {
+		meow_list.forEach(async (meow_path) => {
+			const response = await fetch(`https://api.${window.location.host}/meows/${meow_path}`)
+			if (response.status == 200) {
+				const blob = await response.blob();
+        		const objectUrl = URL.createObjectURL(blob);
+				meows_directory[meow_path] = objectUrl;
+			} 
+		});
+	}
+
+	async function playSound(blob: string) {
+		const response = await fetch(blob);
+		const data = await response.arrayBuffer();
+		const audioCtx = new AudioContext();
+		const buffer = await audioCtx.decodeAudioData(data);
+		const source = audioCtx.createBufferSource();
+		source.buffer = buffer
+		source.connect(audioCtx.destination);
+		source.start();
+	}
+
 	function getRandomItem(obj: Record<string, any>): any {
 		var keys = Object.keys(obj);
     	return obj[keys[ keys.length * Math.random() << 0]];
@@ -38,18 +61,33 @@
 			const sprites_directory_response = await sprites_response.json();
 			cacheImages(sprites_directory_response)
 		}
+
+		const meows_response = await fetch(`https://api.${window.location.host}/meows`);
+		if (meows_response.status == 200) {
+			const meows_directory_response = await meows_response.json();
+			cacheMeows(meows_directory_response);
+		}
 	})
 
 	function getRandomSprite(): string {
 		return getRandomItem(sprites_directory);
 	}
 
-	export function spawnSprite(ttl: number = 1000) {
+	function getRandomMeow(): string {
+		return getRandomItem(meows_directory);
+	}
+
+	
+
+	export async function spawnSprite(ttl: number = 1000) {
 		const id = uuidv4();
 		console.log('Spawn Sprite', id);
 
 		// Save self into sprites rune
 		sprites[id] = null;
+
+		console.log(getRandomMeow())
+		await playSound(getRandomMeow());
 
 		// Remove self from sprites rune
 		setTimeout(() => {

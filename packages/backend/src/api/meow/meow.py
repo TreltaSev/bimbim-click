@@ -22,7 +22,7 @@ async def meows(response: Response):
 @router.get("/meows/{meow_name}")
 async def meows_query(response: Response, meow_name: Annotated[str, Path()]):
     
-    image_path = pathlib.Path(f"/meows/{meow_name}")
+    image_path = pathlib.Path(f"/meow/{meow_name}")
     if not image_path.exists:
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"Meow with name {meow_name} doesn't exist")
     

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Flex, Frame, Spacer, Text } from 'sk-clib';
+	import { Flex, Frame, Header, Spacer, Text } from 'sk-clib';
 	import { MeowSprite } from "@components"
 	import type { PageProps } from './$types';
 	import { onMount } from 'svelte';
@@ -100,6 +100,8 @@
 
 <Flex center class="-mt-40" fill>
 	<Frame
+		flex
+		center
 		onclick={() => postClick()}
 		class={`
         bg-primary ease-in-outs size-30 cursor-pointer
@@ -108,5 +110,7 @@
         hover:size-32
         hover:bg-amber-200 active:size-28
     `}
-	/>
+	>
+			<Header xxl class="text-surface select-none">Click Me</Header>
+	</Frame>
 </Flex>
