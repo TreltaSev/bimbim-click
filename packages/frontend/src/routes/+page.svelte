@@ -3,6 +3,7 @@
 	import { MeowSprite } from "@components"
 	import type { PageProps } from './$types';
 	import { onMount } from 'svelte';
+	import { clamp } from '@utils';
 
 
 	let { data }: PageProps = $props();
@@ -26,10 +27,10 @@
 	});
 
 	function triggerSprite(repeat: number = 1) {
+		repeat = clamp(repeat, 1, 10)
 		for (let i = 0; i < repeat; i++) {
 			// Spawn sprite in random part of screen
-			meowSprite?.spawnSprite();
-			
+			meowSprite?.spawnSprite();			
 		}
 	}
 
