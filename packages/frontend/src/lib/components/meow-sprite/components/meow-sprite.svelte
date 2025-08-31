@@ -13,10 +13,6 @@
 	let sprites_directory: Record<string, string> = $state({});
 	let meows_directory: Record<string, string> = $state({});
 
-	$effect(() => {
-		console.log(sprites_directory)
-	})
-
 	async function cacheImages(image_list: string[]) {
 		image_list.forEach(async (image_path) => {
 			const response = await fetch(`https://api.${window.location.host}/sprites/${image_path}`)
@@ -81,12 +77,10 @@
 
 	export async function spawnSprite(ttl: number = 1000) {
 		const id = uuidv4();
-		console.log('Spawn Sprite', id);
 
 		// Save self into sprites rune
 		sprites[id] = null;
 
-		console.log(getRandomMeow())
 		await playSound(getRandomMeow());
 
 		// Remove self from sprites rune
