@@ -5,6 +5,7 @@
 	import type { Props } from '..';
 	import { v4 as uuidv4 } from 'uuid';
 	import { onMount } from 'svelte';
+	import { randomNumber } from '@utils';
 
 	let { meowSpriteClass = $bindable('') }: Props = $props();
 
@@ -99,10 +100,12 @@
 
 {#each Object.keys(sprites) as id (id)}
 	{@const [x, y] = randomPos()}
+	{@const scale = randomNumber(50, 100)}
 	<div
 		class={`absolute`}
 		style:left={x}
 		style:top={y}
+		style:scale={scale/100}
 		in:flyfade={{ duration: 1000, start: 10, end: 0, intro: true }}
 		out:flyfade={{ duration: 1000, start: 0, end: -10 }}
 	>
