@@ -4,10 +4,45 @@
 	// --- Logic ---
 	import type { Props } from '..';
 	import { v4 as uuidv4 } from 'uuid';
+	import { onMount } from 'svelte';
 
 	let { meowSpriteClass = $bindable('') }: Props = $props();
 
 	const sprites: Record<string, null> = $state({});
+
+	let sprites_directory: Record<string, string> = $state({});
+
+	$effect(() => {
+		console.log(sprites_directory)
+	})
+
+	async function cacheImages(image_list: string[]) {
+		image_list.forEach(async (image_path) => {
+			const response = await fetch(`https://api.${window.location.host}/sprites/${image_path}`)
+			if (response.status == 200) {
+				const blob = await response.blob();
+        		const objectUrl = URL.createObjectURL(blob);
+				sprites_directory[image_path] = objectUrl;
+			} 
+		});
+	}
+
+	function getRandomItem(obj: Record<string, any>): any {
+		var keys = Object.keys(obj);
+    	return obj[keys[ keys.length * Math.random() << 0]];
+	}
+
+	onMount(async () => {
+		const sprites_response = await fetch(`https://api.${window.location.host}/sprites`);
+		if (sprites_response.status == 200) {
+			const sprites_directory_response = await sprites_response.json();
+			cacheImages(sprites_directory_response)
+		}
+	})
+
+	function getRandomSprite(): string {
+		return getRandomItem(sprites_directory);
+	}
 
 	export function spawnSprite(ttl: number = 1000) {
 		const id = uuidv4();
@@ -39,7 +74,7 @@
 		in:flyfade={{ duration: 1000, start: 10, end: 0, intro: true }}
 		out:flyfade={{ duration: 1000, start: 0, end: -10 }}
 	>
-		{id}
+		<img src={getRandomSprite()} class="select-none" alt=""/>
 	</div>
 {/each}
 
