@@ -6,6 +6,7 @@
 	import { v4 as uuidv4 } from 'uuid';
 	import { onMount } from 'svelte';
 	import { randomNumber } from '@utils';
+	import { rotation } from '@transitions/rotation';
 
 	let { meowSpriteClass = $bindable('') }: Props = $props();
 
@@ -82,7 +83,9 @@
 		// Save self into sprites rune
 		sprites[id] = null;
 
-		await playSound(getRandomMeow());
+		try {
+			await playSound(getRandomMeow());
+		} catch (e) {}
 
 		// Remove self from sprites rune
 		setTimeout(() => {
@@ -101,6 +104,11 @@
 {#each Object.keys(sprites) as id (id)}
 	{@const [x, y] = randomPos()}
 	{@const scale = randomNumber(50, 100)}
+
+	<!-- Image Rotation -->
+	{@const startRotation = randomNumber(-30, 0)}
+	{@const endRotation = randomNumber(0, 30)}
+
 	<div
 		class={`absolute`}
 		style:left={x}
@@ -109,7 +117,8 @@
 		in:flyfade={{ duration: 1000, start: 10, end: 0, intro: true }}
 		out:flyfade={{ duration: 1000, start: 0, end: -10 }}
 	>
-		<img src={getRandomSprite()} class="select-none" alt=""/>
+		
+		<img src={getRandomSprite()} transition:rotation={{start: startRotation, end: endRotation}} class="select-none" alt=""/>
 	</div>
 {/each}
 
