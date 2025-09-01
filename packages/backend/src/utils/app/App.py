@@ -1,6 +1,8 @@
 # === Core ===
+import asyncio
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
+from contextlib import asynccontextmanager
 
 from pathlib import Path
 
@@ -9,14 +11,52 @@ import importlib.util
 from fastapi.routing import APIWebSocketRoute
 import yaml
 
+from utils.abc import clicks
+
 
 # === Utils ===
 from utils.console import console
 from utils.helper.config import Yaml
 
 # === Typing ===
-from typing import Any, Dict, List, Union
+from typing import Any, Callable, Dict, List, Union
 from importlib.machinery import ModuleSpec
+
+
+def loop(seconds: int = 0, minutes: int = 0, hours: int = 0, days: int = 0):
+    """
+    Waits a certain amount of time before rerunning its child function
+    ### Usage
+    ```
+    @loop(days=1, hours=16, seconds=32)
+    def some_task(*args, **kwargs):
+        print("im a task")
+    ```
+    """
+    interval: int = 0
+    interval += seconds
+    interval += minutes * 60
+    interval += hours * 60**2
+    interval += days * 24 * 60**2
+
+    def wrapper(func: Callable):
+        async def decorator(*args, **kwargs):
+            while True:
+                await func(*args, **kwargs)
+                await asyncio.sleep(interval)
+        return decorator
+    return wrapper
+
+
+@loop(seconds=10)
+async def clicksPush():
+    clicks.pushCount()
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    asyncio.create_task(clicksPush())
+    yield
 
 
 class App(FastAPI):
@@ -30,19 +70,22 @@ class App(FastAPI):
         self.routers: Dict[str, Any] = {}
 
         super().__init__(*args, **kwargs)
-        
+
+        # Add events
+        self.router.lifespan_context = lifespan
+
         allowed_origins = []
-        
+
         yml = Yaml()
         host = yml.populate_environment(yml.get("host"))
         allowed_origins.append(f"https://{host}")
         allowed_origins.append(f"https://www.{host}")
         allowed_origins.append(f"https://api.{host}")
-        
+
         print(allowed_origins, "...")
-        
-        self.add_middleware(CORSMiddleware, allow_origins=allowed_origins, allow_credentials=False, allow_methods=["GET", "POST"], allow_headers=["*"])
-        
+
+        self.add_middleware(CORSMiddleware, allow_origins=allowed_origins,
+                            allow_credentials=False, allow_methods=["GET", "POST"], allow_headers=["*"])
 
     def __try_resolve(self, name: str, package: str | None = None) -> str | None:
         """
@@ -55,7 +98,8 @@ class App(FastAPI):
         try:
             return importlib.util.resolve_name(name, package)
         except ImportError as e:
-            console.error(f"Import error (name:str): {name} && (package: str | None): {package}, Error: ({e})")
+            console.error(
+                f"Import error (name:str): {name} && (package: str | None): {package}, Error: ({e})")
             return None
 
     def __load(self, spec: Union[str, ModuleSpec]) -> None:
@@ -80,20 +124,24 @@ class App(FastAPI):
         external_router: Any = getattr(mod, "router", None)
 
         if external_router is None:
-            console.warn(f"No router variable found in [orange1 underline]{spec.name.replace('.', '/')}.py[/]")
+            console.warn(
+                f"No router variable found in [orange1 underline]{spec.name.replace('.', '/')}.py[/]")
             return None
 
         if not isinstance(external_router, APIRouter):
-            console.warn(f"Provided router variable isn't of type APIRouter in [orange1 underline]{spec.name.replace('.', '/')}.py[/]")
+            console.warn(
+                f"Provided router variable isn't of type APIRouter in [orange1 underline]{spec.name.replace('.', '/')}.py[/]")
             return None
 
         self.include_router(external_router)
-        
+
         for route in external_router.routes:
             if isinstance(route, APIWebSocketRoute):
-                console.info(f"Registered Route: [orange1]{route.path} [WS][/]")
+                console.info(
+                    f"Registered Route: [orange1]{route.path} [WS][/]")
                 continue
-            console.info(f"Registered Route: [orange1]{route.path} [{', '.join(route.methods)}][/]")
+            console.info(
+                f"Registered Route: [orange1]{route.path} [{', '.join(route.methods)}][/]")
 
     def register_routers(self) -> None:
         """
@@ -119,7 +167,8 @@ class App(FastAPI):
             if any(part.startswith("_") for part in file.parts):
                 continue
 
-            module_path = ".".join(file.relative_to(self.root).with_suffix("").parts)
+            module_path = ".".join(file.relative_to(
+                self.root).with_suffix("").parts)
             out_specs.append(module_path)
 
         return out_specs
