@@ -48,7 +48,7 @@ def loop(seconds: int = 0, minutes: int = 0, hours: int = 0, days: int = 0):
     return wrapper
 
 
-@loop(seconds=10)
+@loop(seconds=1)
 async def clicksPush():
     clicks.pushCount()
 
